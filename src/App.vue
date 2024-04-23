@@ -1,26 +1,25 @@
 <template>
-  <div class="wrapper">
-    <h1>Погодное приложение</h1>
-    <p>Узнать погоду в {{ city == "" ? "...": cityName }}</p>
-    <input type="text" v-model="city" placeholder="Введите свой город">
-    <button v-if="city != ''" @click="GetWeather()">Узнать погоду</button>
-    <button disabled v-else>Введите название города</button>
-    <p class="error">{{ error }}</p>
-
-    <div v-if="info !=null">
-        <p>{{ showTemp }}</p>
-        <p>{{ showFeelsLike }}</p>
-        <p>{{ showMinTemp }}</p>
-        <p>{{ showMaxTemp }}</p>
+    <div class="wrapper">
+        <h1>Погодное приложение</h1>
+        <p>Узнать погоду в {{ city == "" ? "..." : cityName }}</p>
+        <input type="text" v-model="city" placeholder="Введите свой город">
+        <button v-if="city != ''" @click="GetWeather()">Узнать погоду</button>
+        <button disabled v-else>Введите название города(En)</button>
+        <p class="error">{{ error }}</p>
+        <div v-if="info != null">
+            <p>{{ showTemp }}</p>
+            <p>{{ showFeelsLike }}</p>
+            <p>{{ showMinTemp }}</p>
+            <p>{{ showMaxTemp }}</p>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import axios from 'axios'
 export default {
     data() {
-        return{
+        return {
             city: "",
             error: "",
             info: null,
@@ -46,19 +45,15 @@ export default {
     },
     methods: {
         GetWeather() {
-            if(this.city.trim() === "") {
-            this.error = "Что то пошло не так"
-            return false 
-            }
             if (/^\d+$/.test(this.city.trim())) {
-    this.error = "Город не может состоять только из цифр";
-    return false;
-  }
+                this.error = "Город не может состоять только из цифр";
+                return false;
+            }
 
             this.error = ""
 
             axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=397c7919275c355bd507b2a5bfc29c4f`)
-            .then(res => (this.info = res.data))
+                .then(res => (this.info = res.data))
         }
     }
 }
@@ -74,12 +69,15 @@ export default {
     text-align: center;
     color: white;
 }
+
 .wrapper h1 {
-margin-top: 50px;
+    margin-top: 50px;
 }
+
 .wrapper p {
     margin-top: 20px;
 }
+
 .wrapper input {
     margin-top: 30px;
     background: transparent;
@@ -90,9 +88,11 @@ margin-top: 50px;
     padding: 5px 8px;
     outline: none;
 }
+
 .wrapper input:focus {
     border-bottom-color: rgb(156, 7, 156);
 }
+
 .wrapper button {
     background: #E3BC4B;
     color: white;
@@ -103,18 +103,22 @@ margin-top: 50px;
     cursor: pointer;
     transition: transform 500ms ease;
 }
+
 .wrapper button:hover {
     transform: scale(1.1) translateY(-5px);
 }
+
 button:disabled {
     background: #e3bd4b77;
     border: 2px solid #b998357c;
     cursor: not-allowed;
 }
+
 button:disabled:hover {
     transform: none
 }
-.error{
+
+.error {
     color: red;
 }
 </style>
